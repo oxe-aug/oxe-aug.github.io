@@ -304,7 +304,7 @@
                 <option value="toto">Toto</option>
                 <option value="ucsd_kitchen">UCSD Kitchen</option>
                 <option value="utaustin_mutex">UT Austin Mutex</option>
-                <option value="utokyo_xarm_pick_and_place">UT Tokyo XArm Pick and Place</option>
+                <option value="utokyo_xarm_pick_and_place">UTokyo XArm Pick and Place</option>
                 <option value="viola">Viola</option>
               </select>
             </div>
@@ -336,7 +336,7 @@
           }
           
           const datasetName = selector.options[selector.selectedIndex].text;
-          title.textContent = datasetName;
+
           
           // Dataset configurations
           const datasets = {
@@ -425,7 +425,7 @@
           const dataset = datasets[selector.value];
           
           let html = `
-            <video controls width="100%" style="aspect-ratio: 16 / 9;" class="mb-4">
+            <video id="dataset-video" autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;" class="mb-4">
               <source src="${dataset.video}" type="video/mp4">
             </video>
           `;
@@ -442,6 +442,14 @@
           
           content.innerHTML = html;
           display.style.display = 'block';
+          
+          // Ensure autoplay starts on selection (user gesture)
+          const videoEl = document.getElementById('dataset-video');
+          if (videoEl && typeof videoEl.play === 'function') {
+            videoEl.play().catch(() => {
+              // If autoplay is blocked, leave it silent without showing title
+            });
+          }
         }
         </script>
 
@@ -500,13 +508,21 @@
           <p>
             Scaling the number of augmented robots seems to improve policy performance, especially with generalisation to unseen robots!
           </p>
-
+          <video autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;">
+            <source src="./static/videos/standard.m4v" type="video/mp4">
+          </video>
           <div class="content">
             We also see improvements in robustness to visual disruptions. We tested two altered environments, changing lighting conditions and partially blocking the robot from view.
           </div>
           <img src="./static/images/Altered_results.png" alt="Altered Results" width="100%">
           <p> Similar to previous performance gains, this robustness scales up as we include more robots in the training process.</p>
-          <p>TODO ADD SIM VIDEOS</p>
+          <p> Videos of altered environments:</p>
+          <video autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;">
+            <source src="./static/videos/lighting.m4v" type="video/mp4">
+          </video>
+          <video autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;">
+            <source src="./static/videos/patch.m4v" type="video/mp4">
+          </video>
         </div>
 
 
