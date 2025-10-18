@@ -168,6 +168,7 @@
       <ul>
         <li><a href="#oxe-aug">Scaling Data, Not Effort / Cross-Embodiment at Scale</a></li>
         <li><a href="#under-the-hood">Under the Hood</a></li>
+        <li><a href="#dataset">Augmented Datasets</a></li>
         <li><a href="#results">Results</a></li>
       </ul>
     </nav>
@@ -241,38 +242,6 @@
 </section>
 
 
-<!-- 
-  <section class="section is-small" id="umi">
-    <div class="container is-max-desktop">
-
-      <h2 class="title is-1">Robot Data without Robots</h2>
-      <div class="content has-text-justified">
-        <p>
-          Robots are the reason why it's been hard to collect a lot of robot data.
-          They are expensive 💸, tricky to control for dexterous tasks 🎾, and can punch a hole in the wall (or
-          itself) if you're not
-          careful ☠️.
-          What if we could collect robot data without robots?
-        </p>
-      </div>
-
-      <video autoplay muted loop playsinline height="100%">
-        <source src="./static/videos/umi-website.mp4" type="video/mp4">
-      </video>
-      <div class="content has-text-justified">
-        <p>
-          <a href="https://umi-gripper.github.io/">UMI</a> is a handheld gripper with a
-          GoPro attached.
-          With UMI, we can collect real-world robot demonstrations anywhere for any manipulation skill,
-          without any robots.
-        </p>
-      </div>
-
-    </div>
-  </section> -->
-
-
-
 <section class="section is-small has-background-black has-text-light" id="under-the-hood">
   <div class="container is-max-desktop">
 
@@ -297,11 +266,29 @@
   </div>
 </section>
 
-<video autoplay muted loop playsinline height="100%">
-  <source src="./static/videos/sim-small.mp4" type="video/mp4">
-</video>
+<div class="has-text-centered">
+  <video autoplay muted loop playsinline width="80%" style="aspect-ratio: 16 / 9;">
+    <source src="./static/videos/pipeline_vid.mp4" type="video/mp4">
+  </video>
+</div>
 
 
+<section class="section is-small" id="dataset">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths is-centered">
+        <h2 class="title is-3 has-text-centered is-size-5-mobile">Augmented Datasets (content tbd)
+        </h2>
+
+
+
+
+
+        
+      
+      </div>
+    </div>
+  </div>
 
 <section class="section is-small" id="results">
   <div class="container is-max-desktop">
@@ -311,49 +298,98 @@
         </h2>
 
 
-        <div class="content has-text-justified">
+        <h3 class="title is-4 has-text-centered">Experimental Settings</h3>
+        <div class="content">
+          <p>We evaluate our augmentation method using the following experimental configurations:</p>
+          
+          <ul style="list-style: none; padding-left: 0;">
+            <li style="margin-bottom: 1rem;">
+              <strong>Source Only:</strong> Use only the original demonstrations from the source robot.
+            </li>
+            
+            <li style="margin-bottom: 1rem;">
+              <strong>Target Only:</strong> Use only the augmented demonstrations for the target robot (no source data).
+            </li>
+            
+            <li style="margin-bottom: 1rem;">
+              <strong>1+1 (Unseen):</strong> Combine original and augmented demos, where neither robot is the target robot.
+            </li>
+            
+            <li style="margin-bottom: 1rem;">
+              <strong>1+1 (Seen):</strong> Combine original and augmented demos, where the augmented robot is the target robot.
+            </li>
+            
+            <li style="margin-bottom: 1rem;">
+              <strong>N-1 (Leave-One-Out):</strong> Train on all robot demonstrations except the target robot.
+            </li>
+            
+            <li style="margin-bottom: 1rem;">
+              <strong>N (All Robots):</strong> Train on all robot demonstrations.
+            </li>
+          </ul>
+          
+          <div class="notification is-info">
+            <strong>Note:</strong> Only Target Only, 1+1 (Seen), and N configurations train on the target robot's data.
+          </div>
+        </div>
+
+        <h3 class="title is-4 has-text-centered">Simulation Results</h3>
+        <div class="content">
+          <img src="./static/images/sim_results_v2.png" alt="Simulation Results" width="100%">
           <p>
-            Manipulation policies typically predict gripper movements in a fixed world frame, and assumes that the robot
-            track those movements with <b>stability ⚖️</b> and <b>precision 🎯</b>.
-            This is exactly what we set out to learn with our manipulation-centric whole-body controller.
+            Scaling the number of augmented robots seems to improve policy performance, especially with generalisation to unseen robots!
           </p>
 
+          <div class="content">
+            We also see improvements in robustness to visual disruptions. We tested two altered environments, changing lighting conditions and partially blocking the robot from view.
+          </div>
+          <img src="./static/images/Altered_results.png" alt="Altered Results" width="100%">
+          <p> Similar to previous performance gains, this robustness scales up as we include more robots in the training process.</p>
+          <p>TODO ADD SIM VIDEOS</p>
         </div>
 
 
-        <video autoplay muted loop playsinline height="100%">
-          <source src="./static/videos/stable-tracking-small.mp4" type="video/mp4">
-        </video>
+        <h3 class="title is-4 has-text-centered">Real Results</h3>
+        <div class="content">
+          <p>We augment the Bridge dataset (originally WidowX) from OXE into Franka, UR5e, and Xarm7 embodiments, and finetune OpenVLA and π_0 policies.</p>
+        </div>
 
-        <div class="content has-text-justified" id="stable-tracking">
+        <div class="content">
+          <img src="./static/images/Real results.png" alt="Real Results" width="100%">
           <p>
-            <b>Stability ⚖️</b>
-            Our controller tracks gripper movements in the world frame, instead of the body frame like <a
-              href="#wbc-prior-works">most prior
-              works</a>.
-            This means if you push the robot's body, its arm will move in the opposite direction to compensate, as seen
-            above.
-            Now that's what I call a 6 DoF <a href="https://github.com/chvmp/chicken_head">chicken head</a> 🐔!
+            
           </p>
+
+           <h4 class="title is-5">Task Videos:</h4>
+           <p><strong>Croissant into pan</strong></p>
+           <video autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;">
+             <source src="./static/videos/croissant.m4v" type="video/mp4">
+           </video>
+
+           <p><strong>Carrot on plate</strong></p>
+           <video autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;">
+             <source src="./static/videos/croissant.m4v" type="video/mp4">
+           </video>
+
+           <p><strong>Carrot on plate</strong></p>
+           <video autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;">
+             <source src="./static/videos/croissant.m4v" type="video/mp4">
+           </video>
+
+
+           <p><strong>Toy tiger to the left of napkin</strong></p>
+           <video autoplay muted loop playsinline width="100%" style="aspect-ratio: 16 / 9;">
+             <source src="./static/videos/croissant.m4v" type="video/mp4">
+           </video>
+           
         </div>
 
 
 
 
-        <video autoplay muted loop playsinline height="100%">
-          <source src="./static/videos/wbc-precision-small.mp4" type="video/mp4">
-        </video>
-        <div class="content has-text-justified" id="precise-tracking">
-          <p>
-            <b>Precision 🎯</b>
-            We give our controller a trajectory of gripper targets into the future, which allows it to anticipate future
-            gripper movements and reach all targets precisely.
-            For instance, in tossing a tennisball, the robot can brace its body for a high-velocity toss, planting its
-            front legs into the ground to supply enough tossing force.
-            Meanwhile, in pushing a heavy kettlebell, the robot can mobilize all its legs, knowing that it will have to
-            continue pushing forwards in the seconds to come.
-          </p>
-        </div>
+
+        
+      
       </div>
     </div>
   </div>
