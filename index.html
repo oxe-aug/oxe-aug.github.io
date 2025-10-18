@@ -277,12 +277,173 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-four-fifths is-centered">
-        <h2 class="title is-3 has-text-centered is-size-5-mobile">Augmented Datasets (content tbd)
+        <h2 class="title is-3 has-text-centered is-size-5-mobile">Augmented Datasets
         </h2>
+        <p class="has-text-centered mb-5">
+          We augmented 16 popular real-world datasets into 9 different robot embodiments. Each dataset includes episode videos and action distribution histograms.
+        </p>
 
+        <!-- Dataset Dropdown -->
+        <div class="field">
+          <label class="label">Select a Dataset:</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="dataset-selector" onchange="showDataset()">
+                <option value="">Choose a dataset...</option>
+                <option value="austin_buds">Austin Buds</option>
+                <option value="austin_sailor">Austin Sailor</option>
+                <option value="berkeley_autolab_ur5">Berkeley Autolab UR5</option>
+                <option value="bridge">Bridge</option>
+                <option value="fractal">Fractal</option>
+                <option value="iamlab_cmu_pickup_insert">IAMLab CMU Pickup Insert</option>
+                <option value="jaco">Jaco Play</option>
+                <option value="kaist">Kaist Nonprehensile</option>
+                <option value="language_table">Language Table</option>
+                <option value="nyu_franka_play_dataset">NYU Franka Play</option>
+                <option value="taco_play">Taco Play</option>
+                <option value="toto">Toto</option>
+                <option value="ucsd_kitchen">UCSD Kitchen</option>
+                <option value="utaustin_mutex">UT Austin Mutex</option>
+                <option value="utokyo_xarm_pick_and_place">UT Tokyo XArm Pick and Place</option>
+                <option value="viola">Viola</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
+        <!-- Dataset Display Area -->
+        <div id="dataset-display" class="mt-5" style="display: none;">
+          <div class="card">
+            <div class="card-content">
+              <h4 id="dataset-title" class="title is-4 has-text-centered"></h4>
+              <div id="dataset-content" class="content">
+                <!-- Video and histogram will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
 
-
+        <script>
+        function showDataset() {
+          const selector = document.getElementById('dataset-selector');
+          const display = document.getElementById('dataset-display');
+          const title = document.getElementById('dataset-title');
+          const content = document.getElementById('dataset-content');
+          
+          if (selector.value === '') {
+            display.style.display = 'none';
+            return;
+          }
+          
+          const datasetName = selector.options[selector.selectedIndex].text;
+          title.textContent = datasetName;
+          
+          // Dataset configurations
+          const datasets = {
+            'austin_buds': {
+              video: './static/videos/samples_grid/austin_buds/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/austin_buds_dataset/all_histograms.png',
+              hasHistogram: true
+            },
+            'austin_sailor': {
+              video: './static/videos/samples_grid/austin_sailor/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/austin_sailor_dataset/all_histograms.png',
+              hasHistogram: true
+            },
+            'berkeley_autolab_ur5': {
+              video: './static/videos/samples_grid/berkeley_autolab_ur5/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/berkeley_autolab_ur5/all_histograms.png',
+              hasHistogram: true
+            },
+            'bridge': {
+              video: './static/videos/samples_grid/bridge/episode_grid.mp4',
+              histogram: null,
+              hasHistogram: false
+            },
+            'fractal': {
+              video: './static/videos/samples_grid/fractal/episode_grid.mp4',
+              histogram: null,
+              hasHistogram: false
+            },
+            'iamlab_cmu_pickup_insert': {
+              video: './static/videos/samples_grid/iamlab_cmu_pickup_insert/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/iamlab_cmu_pickup_insert/all_histograms.png',
+              hasHistogram: true
+            },
+            'jaco': {
+              video: './static/videos/samples_grid/jaco/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/jaco_play/all_histograms.png',
+              hasHistogram: true
+            },
+            'kaist': {
+              video: './static/videos/samples_grid/kaist/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/kaist_nonprehensile/all_histograms.png',
+              hasHistogram: true
+            },
+            'language_table': {
+              video: './static/videos/samples_grid/language_table/episode_grid.mp4',
+              histogram: null,
+              hasHistogram: false
+            },
+            'nyu_franka_play_dataset': {
+              video: './static/videos/samples_grid/nyu_franka_play_dataset/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/nyu_franka_play_dataset/all_histograms.png',
+              hasHistogram: true
+            },
+            'taco_play': {
+              video: './static/videos/samples_grid/taco_play/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/taco_play/all_histograms.png',
+              hasHistogram: true
+            },
+            'toto': {
+              video: './static/videos/samples_grid/toto/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/toto/all_histograms.png',
+              hasHistogram: true
+            },
+            'ucsd_kitchen': {
+              video: './static/videos/samples_grid/ucsd_kitchen/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/ucsd_kitchen_dataset/all_histograms.png',
+              hasHistogram: true
+            },
+            'utaustin_mutex': {
+              video: './static/videos/samples_grid/utaustin_mutex/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/utaustin_mutex/all_histograms.png',
+              hasHistogram: true
+            },
+            'utokyo_xarm_pick_and_place': {
+              video: './static/videos/samples_grid/utokyo_xarm_pick_and_place/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/utokyo_xarm_pick_and_place/all_histograms.png',
+              hasHistogram: true
+            },
+            'viola': {
+              video: './static/videos/samples_grid/viola/episode_grid.mp4',
+              histogram: './static/images/dataset_stats/viola/all_histograms.png',
+              hasHistogram: true
+            }
+          };
+          
+          const dataset = datasets[selector.value];
+          
+          let html = `
+            <video controls width="100%" style="aspect-ratio: 16 / 9;" class="mb-4">
+              <source src="${dataset.video}" type="video/mp4">
+            </video>
+          `;
+          
+          if (dataset.hasHistogram) {
+            html += `
+              <img src="${dataset.histogram}" alt="${datasetName} Histograms" width="100%">
+            `;
+          } else {
+            html += `
+              <p class="has-text-grey-light is-italic">Histogram data not available</p>
+            `;
+          }
+          
+          content.innerHTML = html;
+          display.style.display = 'block';
+        }
+        </script>
 
         
       
