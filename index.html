@@ -62,6 +62,43 @@
       margin-left: calc(-50vw + 50%);
       margin-right: calc(-50vw + 50%);
     }
+
+    /* Make the hero act as the positioning context */
+    .hero.video {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Full-bleed background video layer */
+    .hero.video .hero-video {
+      position: absolute;
+      inset: 0;              /* top:0; right:0; bottom:0; left:0 */
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    
+    /* Ensure the video actually fills the layer */
+    .hero.video .hero-video > video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Keep overlay and content above the video */
+    .hero.video .overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    
+    .hero.video .hero-head,
+    .hero.video .hero-body,
+    .hero.video .hero-foot {
+      position: relative;
+      z-index: 2;
+    }
+
   </style>
 
   <script src="https://kit.fontawesome.com/19914a84eb.js" crossorigin="anonymous"></script>
@@ -86,16 +123,10 @@
 </head>
 
 <section class="hero is-link is-fullheight video" style="overflow: hidden; position:relative;">
-  <div class="hero-video" style="height: 100%; width: 133.33333333vh; min-width: 100%;min-height: 75vw;">
-    <video playsinline autoplay muted loop
-      style="object-fit: cover; width: 100%; height: 100%; filter: brightness(0.75);">
-      <source src=" ./static/videos/oxe-aug-tiled.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="hero-video is-hidden-tablet is-inline-block-mobile"
-    style="height: 154.28571428vw; width: 100%; min-width:64.81481481vh;min-height:100%;">
-    <video playsinline autoplay muted loop style="filter: brightness(0.75);">
-      <source src=" ./static/videos/oxe-aug-tiled.mp4" type="video/mp4">
+  <div class="hero-video">
+    <video playsinline autoplay muted loop preload="auto"
+           style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.75);">
+      <source src="./static/videos/oxe-aug-tiled.mp4" type="video/mp4">
     </video>
   </div>
   <div class="overlay"></div>
