@@ -82,6 +82,23 @@ body {
   display: inline-block;
 }
 
+.publication-authors.is-flex .author-block {
+  width: 170px;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.author-block .image {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.author-block .image img {
+  object-fit: cover;
+  width: 128px;
+  height: 128px;
+}
+
 .publication-banner img {
 }
 
