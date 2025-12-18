@@ -56,38 +56,56 @@
       margin-right: calc(-50vw + 50%);
     }
 
-    .hero.video { position: relative; overflow: hidden; }
-
+    .hero.video { 
+      position: relative; 
+      overflow: hidden; 
+    }
+    
+    /* Defensive overrides in case index.css changes things on mobile */
     .hero.video .hero-video{
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      position: absolute !important;
+      top: 0; right: 0; bottom: 0; left: 0;   /* use explicit edges (more compatible than inset) */
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      z-index: 0 !important;
     }
-  
+    
     .hero.video .hero-video video{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      background: transparent;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      background: transparent !important;
     }
-  
+    
     .hero.video .overlay{
       position: absolute;
-      inset: 0;
+      top: 0; right: 0; bottom: 0; left: 0;
       z-index: 1;
-      background: rgba(0,0,0,0.25); /* ensure it isn't accidentally solid */
+      background: rgba(0,0,0,0.25);
       pointer-events: none;
     }
-  
+    
     .hero.video .hero-head,
     .hero.video .hero-body,
     .hero.video .hero-foot{
       position: relative;
       z-index: 2;
     }
+
+
+    /* Always show the poster as the hero background fallback (especially on iOS) */
+  .hero.video {
+    background-image: url("./static/images/hero_poster.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 
   </style>
 
@@ -875,5 +893,17 @@
       </script>
     </section>
 
+
+  <script>
+    (function () {
+      const v = document.querySelector('.hero.video .hero-video video');
+      if (!v) return;
+      v.muted = true;            // ensure property is set, not just attribute
+      v.playsInline = true;
+      const tryPlay = () => v.play().catch(() => {});
+      v.addEventListener('canplay', tryPlay, { once: true });
+      tryPlay();
+    })();
+  </script>
 </body>
 </html>
