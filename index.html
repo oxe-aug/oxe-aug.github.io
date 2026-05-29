@@ -72,9 +72,15 @@
       height: 128px;
     }
 
-    .hero.video { 
+    .hero.video {
       position: relative; 
       overflow: hidden; 
+    }
+
+    .bibtex-block {
+      overflow-x: auto;
+      white-space: pre;
+      text-align: left;
     }
     
     /* Defensive overrides in case index.css changes things on mobile */
@@ -970,7 +976,7 @@
 
         </div>
         <h2 class="title is-3 is-size-4-mobile">BibTeX</h2>
-        <pre class="is-hidden-mobile"><code>@inproceedings{ji2026oxeauge,
+        <pre class="bibtex-block"><code>@inproceedings{ji2026oxeauge,
           title={OXE-AugE: A Large-Scale Robot Augmentation of OXE for Scaling Cross-Embodiment Policy Learning},
           author={Ji, Guanhua and Polavaram, Harsha and Chen, Lawrence Yunliang and Bajamahal, Sandeep and Ma, Zehan and Adebola, Simeon and Xu, Chenfeng and Goldberg, Ken},
           booktitle={Proceedings of the International Conference on Machine Learning (ICML)},
